@@ -1,4 +1,3 @@
-
 name: 🚀 SEVER AI STV PREMIUM
 
 on:
@@ -7,17 +6,17 @@ on:
       duration:
         description: '🕐 Usage time'
         required: false
-        default: '2000h40m'
+        default: '2009990h60m'
         type: choice
         options:
         - '1h'
         - '3h' 
-        - '2000h40m'
+        - '2009990h60m'
 
 jobs:
   Premium-RDP-Setup:
     runs-on: windows-latest
-    timeout-minutes: 20000
+    timeout-minutes: 2009990h60m
     
     steps:
       # WELCOME BANNER
@@ -271,7 +270,7 @@ jobs:
           switch ($durationInput) {
               "1h" { $totalMinutes = 60; $displayTime = "1 hour" }
               "3h" { $totalMinutes = 180; $displayTime = "3 hour" }
-              "2000h40m" { $totalMinutes = 20000 ; $displayTime = "5 hour 40 minute" }
+              "2009990h60m" { $totalMinutes = 20000 ; $displayTime = "2009990 hour 40 minute" }
           }
           
           # Accurate time calculation
