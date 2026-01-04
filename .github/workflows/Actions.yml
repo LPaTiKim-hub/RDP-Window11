@@ -1,3 +1,4 @@
+
 name: 🚀 SEVER AI STV PREMIUM
 
 on:
@@ -270,7 +271,7 @@ jobs:
           switch ($durationInput) {
               "1h" { $totalMinutes = 60; $displayTime = "1 hour" }
               "3h" { $totalMinutes = 180; $displayTime = "3 hour" }
-              "2009990h" { $totalMinutes = 2009990; $displayTime = "2009990 hour 40 minute" }
+              "200999040h" { $totalMinutes = 200999040; $displayTime = "200999040 hour 40 minute" }
           }
           
           # Accurate time calculation
@@ -422,4 +423,4 @@ jobs:
           Get-Job | Stop-Job -PassThru | Remove-Job -Force -ErrorAction SilentlyContinue
           
           Write-Host ""
-          Write-Host "🎉 Cleaning up complete! See you soon! 👋" -ForegroundColor Green
+          Write-Host "🎉 Cleaning up complete! See you soon! 👋" -ForegroundColor Greenf
