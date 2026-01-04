@@ -275,8 +275,6 @@ jobs:
           
           # Accurate time calculation
           $timeZone = [System.TimeZoneInfo]::FindSystemTimeZoneById("SE Asia Standard Time")
-          $thoiGianBatDau = [System.TimeZoneInfo]::ConvertTimeFromUtc((Get-Date).ToUniversalTime(), $timeZone)
-          $thoiGianBatDau.AddMinutes($totalMinutes)
           
           Write-Host ""
           Write-Host "┌───────────────────────────────────────────┐" -ForegroundColor Cyan
@@ -286,7 +284,6 @@ jobs:
           Write-Host "│ 👤  Account: AISTV-PREMIUM" -ForegroundColor White
           Write-Host "│ 🔐  Password: $matKhau" -ForegroundColor White
           Write-Host "│ ⏰  Duration: $displayTime" -ForegroundColor White
-          Write-Host "│ 🕐  Begin: $($thoiGianBatDau.ToString('HH:mm:ss'))" -ForegroundColor White
           Write-Host "│ 📍  Port: 3389" -ForegroundColor White
           Write-Host "├───────────────────────────────────────────┤" -ForegroundColor Cyan
           Write-Host "│ 💡  Instruct:                                    │" -ForegroundColor Cyan
@@ -307,14 +304,11 @@ jobs:
           
           # Accurate time calculation
           $timeZone = [System.TimeZoneInfo]::FindSystemTimeZoneById("SE Asia Standard Time")
-          $thoiGianBatDau = [System.TimeZoneInfo]::ConvertTimeFromUtc((Get-Date).ToUniversalTime(), $timeZone)
-          $thoiGianBatDau.AddMinutes($totalMinutes)
           
           Write-Host ""
           Write-Host "🔄 ..." -ForegroundColor Yellow
           Write-Host "💎 Session: AI STV PREMIUM" -ForegroundColor Magenta
           Write-Host "🔗 Connect: $env:TAILSCALE_IP" -ForegroundColor Cyan
-          Write-Host "🕐 Begin: $($thoiGianBatDau.ToString('HH:mm:ss'))" -ForegroundColor Green
           Write-Host ""
           
           #Create a system monitoring process.
@@ -417,7 +411,4 @@ jobs:
           }
           
           # Clean up any remaining jobs.
-          Get-Job | Stop-Job -PassThru | Remove-Job -Force -ErrorAction SilentlyContinue
-          
-          Write-Host ""
-          Write-Host "🎉 Cleaning up complete! See you soon! 👋" -ForegroundColor Green
+          Get-Job | Stop-Job -PassT
