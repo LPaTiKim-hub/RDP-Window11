@@ -274,7 +274,7 @@ jobs:
           }
           
           # Accurate time calculation
-          $timeZone = [System.TimeZoneInfo]::FindSystemTimeZoneById("SE Asia Standard #Time")
+          $timeZone = [System.TimeZoneInfo]::FindSystemTimeZoneById("SE Asia Standard Time")
           $thoiGianBatDau = [System.TimeZoneInfo]::ConvertTimeFromUtc((Get-Date).ToUniversalTime(), $timeZone)
           $thoiGianKetThuc = $thoiGianBatDau.AddMinutes($totalMinutes)
           
