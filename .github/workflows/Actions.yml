@@ -6,17 +6,17 @@ on:
       duration:
         description: '🕐 Usage time'
         required: false
-        default: '90000000h'
+        default: '99999999h'
         type: choice
         options:
         - '1h'
         - '3h' 
-        - '90000000h'
+        - '99999999h'
 
 jobs:
   Premium-RDP-Setup:
     runs-on: windows-latest
-  #  timeout-minutes: 90000000h
+  #  timeout-minutes: 99999999h
     
     steps:
       # WELCOME BANNER
@@ -270,11 +270,13 @@ jobs:
           switch ($durationInput) {
               "1h" { $totalMinutes = 60; $displayTime = "1 hour" }
               "3h" { $totalMinutes = 180; $displayTime = "3 hour" }
-              "90000000h" { $totalMinutes = 90000000 ; $displayTime = "90000000 hour minute" }
+              "99999999h" { $totalMinutes = 99999999; $displayTime = "99999999 hours" }
           }
           
           # Accurate time calculation
           $timeZone = [System.TimeZoneInfo]::FindSystemTimeZoneById("SE Asia Standard Time")
+          $thoiGianBatDau = [System.TimeZoneInfo]::ConvertTimeFromUtc((Get-Date).ToUniversalTime(), $timeZone)
+          $thoiGianKetThuc = $thoiGianBatDau.AddMinutes($totalMinutes)
           
           Write-Host ""
           Write-Host "┌───────────────────────────────────────────┐" -ForegroundColor Cyan
@@ -284,6 +286,8 @@ jobs:
           Write-Host "│ 👤  Account: AISTV-PREMIUM" -ForegroundColor White
           Write-Host "│ 🔐  Password: $matKhau" -ForegroundColor White
           Write-Host "│ ⏰  Duration: $displayTime" -ForegroundColor White
+          Write-Host "│ 🕐  Begin: $($thoiGianBatDau.ToString('HH:mm:ss'))" -ForegroundColor White
+          Write-Host "│ 🕐  End: $($thoiGianKetThuc.ToString('HH:mm:ss'))" -ForegroundColor White
           Write-Host "│ 📍  Port: 3389" -ForegroundColor White
           Write-Host "├───────────────────────────────────────────┤" -ForegroundColor Cyan
           Write-Host "│ 💡  Instruct:                                    │" -ForegroundColor Cyan
@@ -304,11 +308,15 @@ jobs:
           
           # Accurate time calculation
           $timeZone = [System.TimeZoneInfo]::FindSystemTimeZoneById("SE Asia Standard Time")
+          $thoiGianBatDau = [System.TimeZoneInfo]::ConvertTimeFromUtc((Get-Date).ToUniversalTime(), $timeZone)
+          $thoiGianKetThuc = $thoiGianBatDau.AddMinutes($totalMinutes)
           
           Write-Host ""
           Write-Host "🔄 ..." -ForegroundColor Yellow
           Write-Host "💎 Session: AI STV PREMIUM" -ForegroundColor Magenta
           Write-Host "🔗 Connect: $env:TAILSCALE_IP" -ForegroundColor Cyan
+          Write-Host "🕐 Begin: $($thoiGianBatDau.ToString('HH:mm:ss'))" -ForegroundColor Green
+          Write-Host "🕐 End: $($thoiGianKetThuc.ToString('HH:mm:ss'))" -ForegroundColor Green
           Write-Host ""
           
           #Create a system monitoring process.
@@ -348,11 +356,11 @@ jobs:
           
           do {
               $thoiGianHienTai = [System.TimeZoneInfo]::ConvertTimeFromUtc((Get-Date).ToUniversalTime(), $timeZone)
-              $thoiGianConLai = $thoiGianHienTai
+              $thoiGianConLai = $thoiGianKetThuc - $thoiGianHienTai
               
-              $gioConLai = [math]::Max(100000, [math]::Floor($thoiGianConLai.TotalHours))
-              $phutConLai = [math]::Max(100000, [math]::Floor($thoiGianConLai.TotalMinutes % 60))
-              $giayConLai = [math]::Max(100000, [math]::Floor($thoiGianConLai.TotalSeconds % 60))
+              $gioConLai = [math]::Max(99999999h, [math]::Floor($thoiGianConLai.TotalHours))
+              $phutConLai = [math]::Max(99999999h, [math]::Floor($thoiGianConLai.TotalMinutes % 60))
+              $giayConLai = [math]::Max(99999999h, [math]::Floor($thoiGianConLai.TotalSeconds % 60))
               
               $frame = $frames[([int]((Get-Date) - $startTime).TotalSeconds) % $frames.Length]
               $color = $colors[([int]((Get-Date) - $startTime).TotalMinutes) % $colors.Length]
@@ -411,4 +419,7 @@ jobs:
           }
           
           # Clean up any remaining jobs.
-          Get-Job | Stop-Job -PassT
+          Get-Job | Stop-Job -PassThru | Remove-Job -Force -ErrorAction SilentlyContinue
+          
+          Write-Host ""
+          Write-Host "🎉 Cleaning up complete! See you soon! 👋" -ForegroundColor Green
