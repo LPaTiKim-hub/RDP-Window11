@@ -1,3 +1,4 @@
+
 name: 🚀 SEVER AI STV PREMIUM
 
 on:
@@ -336,11 +337,3 @@ jobs:
                   Start-Sleep -Seconds 30
               }
           }
-          
-          # Chạy monitor trong background
-          Start-Job -ScriptBlock $monitorScript -Name "SystemMonitor"
-          
-          # Displays the main timer
-          $frames = @('⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏')
-          $colors = @('Red', 'Yellow', 'Green', 'Cyan', 'Blue', 'Magenta')
-          $startTime = Get-Date
