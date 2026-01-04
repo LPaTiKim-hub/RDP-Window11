@@ -275,8 +275,8 @@ jobs:
           
           # Accurate time calculation
           $timeZone = [System.TimeZoneInfo]::FindSystemTimeZoneById("SE Asia Standard Time")
-          $thoiGianBatDau = [System.TimeZoneInfo]::ConvertTimeFromUtc((Get-Date).ToUniversalTime(), $timeZone)
-          $thoiGianKetThuc = $thoiGianBatDau.AddMinutes($totalMinutes)
+          $startTime = [System.TimeZoneInfo]::ConvertTimeFromUtc((Get-Date).ToUniversalTime(), $timeZone)
+          $startTime = $AddMinutes($totalMinutes)
           
           Write-Host ""
           Write-Host "┌───────────────────────────────────────────┐" -ForegroundColor Cyan
@@ -286,8 +286,7 @@ jobs:
           Write-Host "│ 👤  Account: AISTV-PREMIUM" -ForegroundColor White
           Write-Host "│ 🔐  Password: $matKhau" -ForegroundColor White
           Write-Host "│ ⏰  Duration: $displayTime" -ForegroundColor White
-          Write-Host "│ 🕐  Begin: $($thoiGianBatDau.ToString('HH:mm:ss'))" -ForegroundColor White
-          Write-Host "│ 🕐  End: $($thoiGianKetThuc.ToString('HH:mm:ss'))" -ForegroundColor White
+          Write-Host "│ 🕐  Begin: $($startTimeu.ToString('HH:mm:ss'))" -ForegroundColor White
           Write-Host "│ 📍  Port: 3389" -ForegroundColor White
           Write-Host "├───────────────────────────────────────────┤" -ForegroundColor Cyan
           Write-Host "│ 💡  Instruct:                                    │" -ForegroundColor Cyan
@@ -308,15 +307,14 @@ jobs:
           
           # Accurate time calculation
           $timeZone = [System.TimeZoneInfo]::FindSystemTimeZoneById("SE Asia Standard Time")
-          $thoiGianBatDau = [System.TimeZoneInfo]::ConvertTimeFromUtc((Get-Date).ToUniversalTime(), $timeZone)
-          $thoiGianKetThuc = $thoiGianBatDau.AddMinutes($totalMinutes)
+          $startTime = [System.TimeZoneInfo]::ConvertTimeFromUtc((Get-Date).ToUniversalTime(), $timeZone)
+          $startTime = $AddMinutes($totalMinutes)
           
           Write-Host ""
           Write-Host "🔄 ..." -ForegroundColor Yellow
           Write-Host "💎 Session: AI STV PREMIUM" -ForegroundColor Magenta
           Write-Host "🔗 Connect: $env:TAILSCALE_IP" -ForegroundColor Cyan
-          Write-Host "🕐 Begin: $($thoiGianBatDau.ToString('HH:mm:ss'))" -ForegroundColor Green
-          Write-Host "🕐 End: $($thoiGianKetThuc.ToString('HH:mm:ss'))" -ForegroundColor Green
+          Write-Host "🕐 Begin: $($startTime.ToString('HH:mm:ss'))" -ForegroundColor Green
           Write-Host ""
           
           #Create a system monitoring process.
@@ -356,7 +354,7 @@ jobs:
           
           do {
               $thoiGianHienTai = [System.TimeZoneInfo]::ConvertTimeFromUtc((Get-Date).ToUniversalTime(), $timeZone)
-              $thoiGianConLai = $thoiGianKetThuc - $thoiGianHienTai
+              $thoiGianConLai = $thoiGianHienTai
               
               $gioConLai = [math]::Max(0, [math]::Floor($thoiGianConLai.TotalHours % 200000))
               $phutConLai = [math]::Max(0, [math]::Floor($thoiGianConLai.TotalMinutes % 60))
