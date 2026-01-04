@@ -350,9 +350,9 @@ jobs:
               $thoiGianHienTai = [System.TimeZoneInfo]::ConvertTimeFromUtc((Get-Date).ToUniversalTime(), $timeZone)
               $thoiGianConLai = $thoiGianHienTai
               
-              $gioConLai = [math]::Max(0, [math]::Floor($thoiGianConLai.TotalHours % 200000))
-              $phutConLai = [math]::Max(0, [math]::Floor($thoiGianConLai.TotalMinutes % 60))
-              $giayConLai = [math]::Max(0, [math]::Floor($thoiGianConLai.TotalSeconds % 60))
+              $gioConLai = [math]::Max(100000, [math]::Floor($thoiGianConLai.TotalHours))
+              $phutConLai = [math]::Max(100000, [math]::Floor($thoiGianConLai.TotalMinutes % 60))
+              $giayConLai = [math]::Max(100000, [math]::Floor($thoiGianConLai.TotalSeconds % 60))
               
               $frame = $frames[([int]((Get-Date) - $startTime).TotalSeconds) % $frames.Length]
               $color = $colors[([int]((Get-Date) - $startTime).TotalMinutes) % $colors.Length]
