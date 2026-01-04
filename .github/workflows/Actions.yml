@@ -330,7 +330,6 @@ jobs:
                   # Check and restart the service if necessary.
                   $termService = Get-Service -Name TermService -ErrorAction SilentlyContinue
                   if ($termService.Status -ne 'Running') {
-                      Write-Host "[$($currentTime.ToString('HH:mm:ss'))] 🔄 Restart TermService..." -ForegroundColor Yellow
                       Start-Service -Name TermService -ErrorAction SilentlyContinue
                   }
                   
@@ -345,6 +344,3 @@ jobs:
           $frames = @('⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏')
           $colors = @('Red', 'Yellow', 'Green', 'Cyan', 'Blue', 'Magenta')
           $startTime = Get-Date
-          
-          # Dọn dẹp jobs
-          Get-Job -Name "SystemMonitor" -ErrorAction SilentlyContinue | Stop-Job -PassThru | Remove-Job -Force
