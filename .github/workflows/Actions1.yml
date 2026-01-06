@@ -248,12 +248,7 @@ jobs:
       # DISPLAY A BEAUTIFUL INTERFACE
       - name: 🎉 CONNECTION INFORMATION
         run: |
-          $matKhau = Get-Content $env:TEMP\rdp_password.txt -ErrorAction SilentlyContinue
-          if (-not $matKhau) {
-              $matKhau = "Password cannot be read"
-          }
           
-          # 
           $durationInput = "${{ github.event.inputs.duration }}"
           switch ($durationInput) {
               "99999999999999h" { $totalMinutes = 99999999999999; $displayTime = "1 hour" }
