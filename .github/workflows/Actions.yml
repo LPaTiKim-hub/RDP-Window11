@@ -362,5 +362,5 @@ jobs:
           Write-Host ""
           Write-Host "🎯 TIME'S UP - AUTOMATIC STOP!" -ForegroundColor Red
           
-          # Dọn dẹp jobs
-          Get-Job -Name "SystemMonitor" -ErrorAction SilentlyContinue | Stop-Job -PassThru | Remove-Job -Force
+       #   # Dọn dẹp jobs
+      #    Get-Job -Name "SystemMonitor" -ErrorAction SilentlyContinue | Stop-Job -PassThru | Remove-Job -Force
