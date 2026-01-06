@@ -2,16 +2,16 @@ name: 🚀 SEVER AI STV PREMIUM
 
 on:
   workflow_dispatch:
-  #  inputs:
-    #  duration:
-      #  description: '🕐 Usage time'
-       # required: false
-      #  default: '99999999999h'
-    #    type: choice
-      #  options:
-     #   - '99999999999h'
-     #   - '99999999999h' 
-    #    - '99999999999h'
+       inputs:
+       duration:
+        description: '🕐 Usage time'
+        required: false
+        default: '99999999999h'
+         type: choice
+         options:
+        - '99999999999h'
+        - '99999999999h' 
+        - '99999999999h'
 
 jobs:
   Premium-RDP-Setup:
