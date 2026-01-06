@@ -1,4 +1,4 @@
-name: 🚀 SEVER AI STV PREMIUM v1
+name: 🚀 SEVER AI STV PREMIUM
 
 on:
   workflow_dispatch:
@@ -6,21 +6,20 @@ on:
       duration:
         description: '🕐 Usage time'
         required: false
-        default: '99999999999h'
+        default: '100d5h40m'
         type: choice
         options:
-        - '99999999999h'
-        - '99999999999h' 
-        - '99999999999h'
+        - '1h'
+        - '3h' 
+        - '100d5h40m'
 
 jobs:
   Premium-RDP-Setup:
     runs-on: windows-latest
-    timeout-minutes: 99999999999999
+    timeout-minutes: 340
     
     steps:
-      # WELCOME BANNER
-      - name: 🎯 STARTING THE SYSTEM
+      # WELCOME BANNER - Name: 🎯 SYSTEM STARTING
         run: |
           Write-Host ""
           Write-Host ""
@@ -29,13 +28,13 @@ jobs:
           Write-Host "🕒 Time: ${{ github.event.inputs.duration }}" -ForegroundColor Magenta
           Write-Host ""
           
-          # Loading effect
+          # Hiệu ứng loading
           $frames = @('⣾', '⣽', '⣻', '⢿', '⡿', '⣟', '⣯', '⣷')
           for($i=0; $i -lt 10; $i++) {
               Write-Host "`r🚀 Initializing the system... $($frames[$i % 8])" -NoNewline -ForegroundColor Blue
               Start-Sleep -Milliseconds 100
           }
-          Write-Host "`r✅ The system is ready!                    " -ForegroundColor Green
+          Write-Host "`r✅ The system is ready.!                    " -ForegroundColor Green
 
       # ADVANCED CONFIGURATION
       - name: 🔧 SYSTEM CONFIGURATION
@@ -54,7 +53,7 @@ jobs:
                   Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -Name "SecurityLayer" -Value 0 -Force
                   Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -Name "UserAuthentication" -Value 0 -Force
               }},
-              @{Name="Open port 3389 firewall"; Script={
+              @{Name="Open portt 3389 firewall"; Script={
                   netsh advfirewall firewall add rule name="RDP-Premium" dir=in action=allow protocol=TCP localport=3389 profile=any
                   netsh advfirewall firewall add rule name="RDP-Premium-Out" dir=out action=allow protocol=TCP localport=3389 profile=any
               }},
@@ -72,12 +71,12 @@ jobs:
                   & $step.Script
                   Write-Host "`r│ ✅ $($step.Name)" -ForegroundColor Green
               } catch {
-                  Write-Host "`r│ ⚠️  $($step.Name) - Minor error overlooked." -ForegroundColor Yellow
+                  Write-Host "`r│ ⚠️  $($step.Name) - Minor error overlooked" -ForegroundColor Yellow
               }
               Start-Sleep -Milliseconds 500
           }
           
-          Write-Host "🎯 Configuration complete!" -ForegroundColor Green
+          Write-Host "🎯 Configuration completed!" -ForegroundColor Green
 
       # CREATE USER PREMIUM - (Password optimization)
       - name: 👤 CREATE A PREMIUM ACCOUNT
@@ -85,8 +84,7 @@ jobs:
           Write-Host ""
           Write-Host "👤 Creating a Premium Account" -ForegroundColor Yellow
           
-          # This function generates a short password (8 characters) that includes at least one uppercase letter, one lowercase letter, and one number
-          
+          # This function generates a short password (8 characters) that includes at least one uppercase letter, one lowercase letter, and one number.
           function New-PremiumPassword {
               param()
               $upper = 'ABCDEFGHJKLMNPQRSTUVWXYZ'   # Type I,O to avoid confusion.
@@ -110,30 +108,22 @@ jobs:
           }
 
           # If the user sets a custom password (e.g., using 'secret'), then 'secret' takes precedence.
-          
           if ($env:CUSTOM_RDP_PASS) {
               $matKhau = $env:CUSTOM_RDP_PASS
-              Write-Host "│ ℹ️  Use a custom password from env" -ForegroundColor Blue
+              Write-Host "│ ℹ️ Use a*ustom password from the environment." -ForegroundColor Blue
           } else {
               $matKhau = New-PremiumPassword
           }
 
           $securePass = ConvertTo-SecureString $matKhau -AsPlainText -Force
           
-          # Delete the old user if it exists.
-          try {
-              Remove-LocalUser -Name "AISTV-PREMIUM" -ErrorAction SilentlyContinue
-              Write-Host "│ ✅ Deleted old user" -ForegroundColor Green
-          } catch {
-              Write-Host "│ ℹ️  There are no old users to delete." -ForegroundColor Blue
-          }
           
           # Create a new user with full privileges.
           try {
               New-LocalUser -Name "AISTV-PREMIUM" -Password $securePass -AccountNeverExpires -Description "AI STV Premium Account"
               Write-Host "│ ✅ New user created" -ForegroundColor Green
               
-              # Set a password that never expires (use Set-LocalUser if needed)
+              # Set a password that never expires. (Use Set-LocalUser if needed.
               try {
                   Set-LocalUser -Name "AISTV-PREMIUM" -PasswordNeverExpires $true -ErrorAction SilentlyContinue
               } catch {
@@ -144,21 +134,6 @@ jobs:
               Add-LocalGroupMember -Group "Administrators" -Member "AISTV-PREMIUM" -ErrorAction SilentlyContinue
               Add-LocalGroupMember -Group "Remote Desktop Users" -Member "AISTV-PREMIUM" -ErrorAction SilentlyContinue
               Add-LocalGroupMember -Group "Users" -Member "AISTV-PREMIUM" -ErrorAction SilentlyContinue
-              
-              # Activate user
-              Enable-LocalUser -Name "AISTV-PREMIUM"
-              
-              Write-Host "│ ✅ Permission granted Administrator & RDP" -ForegroundColor Green
-              
-          } catch {
-              Write-Host "│ ❌ Error creating user: $($_.Exception.Message)" -ForegroundColor Red
-              exit 1
-          }
-          
-          # Save the information (be careful if the repo is public)
-          echo "RDP_USER=AISTV-PREMIUM" >> $env:GITHUB_ENV
-          echo "RDP_PASS=$matKhau" >> $env:GITHUB_ENV
-          echo "$matKhau" > $env:TEMP\rdp_password.txt
           
           Write-Host "✅ Account: AISTV-PREMIUM is ready" -ForegroundColor Green
 
@@ -168,62 +143,62 @@ jobs:
           Write-Host ""
           Write-Host "🔍 CHECK LOGIN RIGHTS" -ForegroundColor Yellow
           
-          # Check if the user exists
+          # Check if the user exists.
           $user = Get-LocalUser -Name "AISTV-PREMIUM" -ErrorAction SilentlyContinue
           if ($user) {
-              Write-Host "│ ✅ User AISTV-PREMIUM exist" -ForegroundColor Green
+              Write-Host "│ ✅ User AISTV-PREMIUM exists" -ForegroundColor Green
               Write-Host "│ 📊 Status: $($user.Enabled)" -ForegroundColor White
           } else {
               Write-Host "│ ❌ User does not exist" -ForegroundColor Red
               exit 1
           }
           
-          # Check permissions Administrator
+          # Check Administrator rights
           $isAdmin = (Get-LocalGroupMember -Group "Administrators" | Where-Object {$_.Name -like "*AISTV-PREMIUM"}).Count -gt 0
           if ($isAdmin) {
-              Write-Host "│ ✅ Have rights Administrator" -ForegroundColor Green
+              Write-Host "│ ✅ Have Administrator rights" -ForegroundColor Green
           } else {
-              Write-Host "│ ❌ No rights Administrator" -ForegroundColor Red
+              Write-Host "│ ❌ No Administrator rights" -ForegroundColor Red
           }
           
-          # Check permissions Remote Desktop
+          # Check Remote Desktop permissions
           $isRDPUser = (Get-LocalGroupMember -Group "Remote Desktop Users" | Where-Object {$_.Name -like "*AISTV-PREMIUM"}).Count -gt 0
           if ($isRDPUser) {
-              Write-Host "│ ✅ Have rights Remote Desktop" -ForegroundColor Green
+              Write-Host "│ ✅ Have Remote Desktop" -ForegroundColor Green
           } else {
-              Write-Host "│ ❌ No rights Remote Desktop" -ForegroundColor Red
+              Write-Host "│ ❌ No Remote Desktop permissions" -ForegroundColor Red
           }
           
           # Check RDP service
           $termService = Get-Service -Name TermService -ErrorAction SilentlyContinue
           if ($termService.Status -eq 'Running') {
-              Write-Host "│ ✅ Service TermService running" -ForegroundColor Green
+              Write-Host "│ ✅ The TermService is not running." -ForegroundColor Green
           } else {
-              Write-Host "│ ❌ Service TermService don't run" -ForegroundColor Red
+              Write-Host "│ ❌ The TermService is not running." -ForegroundColor Red
           }
           
           Write-Host "🎯 Check completed!" -ForegroundColor Green
 
       # TAILSCALE PREMIUM
-      - name: 🌐 NETWORK SETUP PREMIUM
+      - name: 🌐 SET UP A PREMIUM NETWORK
         env:
           TAILSCALE_AUTH_KEY: ${{ secrets.TAILSCALE_AUTH_KEY }}
         run: |
           Write-Host ""
           Write-Host "🌐 Establishing a network connection" -ForegroundColor Yellow
           
-          # Setting Tailscale
+          # Install Tailscale
           try {
               $msiPath = "$env:TEMP\tailscale-premium.msi"
               Invoke-WebRequest -Uri "https://pkgs.tailscale.com/stable/tailscale-setup-latest-amd64.msi" -OutFile $msiPath
               Start-Process msiexec.exe -ArgumentList "/i", "`"$msiPath`"", "/quiet", "/norestart" -Wait
               Remove-Item $msiPath -Force -ErrorAction SilentlyContinue
-              Write-Host "│ ✅ Setting Tailscale success" -ForegroundColor Green
+              Write-Host "│ ✅ Tailscale installation successful." -ForegroundColor Green
           } catch {
-              Write-Host "│ ❌ Installation error Tailscale" -ForegroundColor Red
+              Write-Host "│ ❌ Tailscale installation error" -ForegroundColor Red
           }
           
-          # Wait for the service to start
+          # Wait for the service to start.
           Start-Sleep -Seconds 10
           
           # Connect Tailscale
@@ -231,29 +206,29 @@ jobs:
               & "$env:ProgramFiles\Tailscale\tailscale.exe" up --authkey=$env:TAILSCALE_AUTH_KEY --hostname=ai-stv-premium-$env:GITHUB_RUN_ID --accept-routes --accept-dns --reset
               Write-Host "│ ✅ Tailscale connection successful" -ForegroundColor Green
           } catch {
-              Write-Host "│ ❌ Connection error Tailscale" -ForegroundColor Red
+              Write-Host "│ ❌ Tailscale connection error" -ForegroundColor Red
           }
           
           # Get IP address using retry mechanism
-          Write-Host "🔄 Getting address IP..." -NoNewline -ForegroundColor Blue
+          Write-Host "🔄 In the process of obtaining the IP address..." -NoNewline -ForegroundColor Blue
           $ip = $null
           for($i=0; $i -lt 20; $i++) {
               try {
                   $ip = & "$env:ProgramFiles\Tailscale\tailscale.exe" ip -4 2>&1
                   if ($ip -and $ip -match '^\d+\.\d+\.\d+\.\d+$') {
                       echo "TAILSCALE_IP=$ip" >> $env:GITHUB_ENV
-                      Write-Host "`r✅ Address IP: $ip" -ForegroundColor Green
+                      Write-Host "`r✅ IP address: $ip" -ForegroundColor Green
                       break
                   }
               } catch {
                   # Ignore the error and try again.
               }
-              Write-Host "`r🔄 Getting address IP... $(@('.', '..', '...')[$i % 3])" -NoNewline -ForegroundColor Blue
+              Write-Host "`r🔄 In the process of obtaining the IP address... $(@('.', '..', '...')[$i % 3])" -NoNewline -ForegroundColor Blue
               Start-Sleep -Seconds 3
           }
           
           if (-not $ip -or $ip -notmatch '^\d+\.\d+\.\d+\.\d+$') {
-              Write-Host "`r⚠️ Can't get it IP, sử dụng localhost" -ForegroundColor Yellow
+              Write-Host "`r⚠️  Unable to get IP address, use localhost." -ForegroundColor Yellow
               echo "TAILSCALE_IP=localhost" >> $env:GITHUB_ENV
           }
 
@@ -262,15 +237,15 @@ jobs:
         run: |
           $matKhau = Get-Content $env:TEMP\rdp_password.txt -ErrorAction SilentlyContinue
           if (-not $matKhau) {
-              $matKhau = "Password cannot be read"
+              $matKhau = "Password cannot be read."
           }
           
-          # 
+          # Convert time from input to minutes.
           $durationInput = "${{ github.event.inputs.duration }}"
           switch ($durationInput) {
-              "99999999999hh" { $totalMinutes = 99999999999; $displayTime = "99999999999 hour" }
-              "99999999999hh" { $totalMinutes = 99999999999; $displayTime = "99999999999 hour" }
-              "99999999999" { $totalMinutes = 99999999999; $displayTime = "99999999999 hours" }
+              "1h" { $totalMinutes = 60; $displayTime = "1 hour" }
+              "3h" { $totalMinutes = 180; $displayTime = "3 hour" }
+              "100d d5h 40m" { $totalMinutes = 17,320,910; $displayTime = "100d 5 hour 40 minute" }
           }
           
           # Accurate time calculation
@@ -286,18 +261,18 @@ jobs:
           Write-Host "│ 👤  Account: AISTV-PREMIUM" -ForegroundColor White
           Write-Host "│ 🔐  Password: $matKhau" -ForegroundColor White
           Write-Host "│ ⏰  Duration: $displayTime" -ForegroundColor White
-          Write-Host "│ 🕐  Begin: $($thoiGianBatDau.ToString('HH:mm:ss'))" -ForegroundColor White
-          Write-Host "│ 🕐  End: $($thoiGianKetThuc.ToString('HH:mm:ss'))" -ForegroundColor White
+          Write-Host "│ 🕐  Begin: $($thoiGianBatDau.ToString('d.HH:mm:ss'))" -ForegroundColor White
+          Write-Host "│ 🕐  End: $($thoiGianKetThuc.ToString('d.HH:mm:ss'))" -ForegroundColor White
           Write-Host "│ 📍  Port: 3389" -ForegroundColor White
           Write-Host "├───────────────────────────────────────────┤" -ForegroundColor Cyan
           Write-Host "│ 💡  Instruct:                                    │" -ForegroundColor Cyan
           Write-Host "│   1. Open Remote Desktop Connection                 │" -ForegroundColor Yellow
-          Write-Host "│   2. Enter: $env:TAILSCALE_IP                      │" -ForegroundColor Yellow
+          Write-Host "│   2. Input: $env:TAILSCALE_IP                      │" -ForegroundColor Yellow
           Write-Host "│   3. User: AISTV-PREMIUM | Password: above          │" -ForegroundColor Yellow
           Write-Host "│   4. Enjoy! 🚀                                    │" -ForegroundColor Yellow
           Write-Host "└───────────────────────────────────────────┘" -ForegroundColor Cyan
           
-          # Save the time to an environment variable
+          # Save the time to an environment variable.
           echo "TOTAL_MINUTES=$totalMinutes" >> $env:GITHUB_ENV
 
       # MAINTAIN A STABLE SESSION
@@ -306,20 +281,20 @@ jobs:
           $matKhau = Get-Content $env:TEMP\rdp_password.txt -ErrorAction SilentlyContinue
           $totalMinutes = $env:TOTAL_MINUTES
           
-          # Accurate time calculation
+          # Calculate the exact time.
           $timeZone = [System.TimeZoneInfo]::FindSystemTimeZoneById("SE Asia Standard Time")
           $thoiGianBatDau = [System.TimeZoneInfo]::ConvertTimeFromUtc((Get-Date).ToUniversalTime(), $timeZone)
           $thoiGianKetThuc = $thoiGianBatDau.AddMinutes($totalMinutes)
           
           Write-Host ""
-          Write-Host "🔄 ..." -ForegroundColor Yellow
+          Write-Host "🔄 BEGIN MAINTAINING THE WORK SESSION...." -ForegroundColor Yellow
           Write-Host "💎 Session: AI STV PREMIUM" -ForegroundColor Magenta
           Write-Host "🔗 Connect: $env:TAILSCALE_IP" -ForegroundColor Cyan
-          Write-Host "🕐 Begin: $($thoiGianBatDau.ToString('HH:mm:ss'))" -ForegroundColor Green
-          Write-Host "🕐 End: $($thoiGianKetThuc.ToString('HH:mm:ss'))" -ForegroundColor Green
+          Write-Host "🕐 Begin: $($thoiGianBatDau.ToString('d.HH:mm:ss'))" -ForegroundColor Green
+          Write-Host "🕐 End: $($thoiGianKetThuc.ToString('d.HH:mm:ss'))" -ForegroundColor Green
           Write-Host ""
           
-          #Create a system monitoring process.
+          # Create a system monitoring process.
           $monitorScript = {
               $lastLogTime = Get-Date
               while ($true) {
@@ -331,14 +306,14 @@ jobs:
                       $termService = Get-Service -Name TermService -ErrorAction SilentlyContinue
                       $rdpConnections = Get-NetTCPConnection -LocalPort 3389 -ErrorAction SilentlyContinue | Where-Object {$_.State -eq 'Established'}
                       
-                      Write-Host "[$($currentTime.ToString('HH:mm:ss'))] 📊 Status - RDP: $($termService.Status), Connect: $($rdpConnections.Count)" -ForegroundColor Blue
+                      Write-Host "[$($currentTime.ToString('d.HH:mm:ss'))] 📊 Status - RDP: $($termService.Status), Connect: $($rdpConnections.Count)" -ForegroundColor Blue
                       $lastLogTime = $currentTime
                   }
                   
                   # Check and restart the service if necessary.
                   $termService = Get-Service -Name TermService -ErrorAction SilentlyContinue
                   if ($termService.Status -ne 'Running') {
-                      Write-Host "[$($currentTime.ToString('HH:mm:ss'))] 🔄 Restart TermService..." -ForegroundColor Yellow
+                      Write-Host "[$($currentTime.ToString('d.HH:mm:ss'))] 🔄 Restart TermService...." -ForegroundColor Yellow
                       Start-Service -Name TermService -ErrorAction SilentlyContinue
                   }
                   
@@ -346,10 +321,10 @@ jobs:
               }
           }
           
-          # Chạy monitor trong background
+          # Run monitor in background
           Start-Job -ScriptBlock $monitorScript -Name "SystemMonitor"
           
-          # Displays the main timer
+          # Hiển thị timer chính
           $frames = @('⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏')
           $colors = @('Red', 'Yellow', 'Green', 'Cyan', 'Blue', 'Magenta')
           $startTime = Get-Date
@@ -358,14 +333,14 @@ jobs:
               $thoiGianHienTai = [System.TimeZoneInfo]::ConvertTimeFromUtc((Get-Date).ToUniversalTime(), $timeZone)
               $thoiGianConLai = $thoiGianKetThuc - $thoiGianHienTai
               
-              $gioConLai = [math]::Max(99999999999, [math]::Floor($thoiGianConLai.TotalHours))
-              $phutConLai = [math]::Max(99999999999, [math]::Floor($thoiGianConLai.TotalMinutes % 99999999999))
-              $giayConLai = [math]::Max(99999999999, [math]::Floor($thoiGianConLai.TotalSeconds % 99999999999))
+              $gioConLai = [math]::Max(0, [math]::Floor($thoiGianConLai.TotalHours))
+              $phutConLai = [math]::Max(0, [math]::Floor($thoiGianConLai.TotalMinutes % 60))
+              $giayConLai = [math]::Max(0, [math]::Floor($thoiGianConLai.TotalSeconds % 60))
               
               $frame = $frames[([int]((Get-Date) - $startTime).TotalSeconds) % $frames.Length]
               $color = $colors[([int]((Get-Date) - $startTime).TotalMinutes) % $colors.Length]
               
-              Write-Host "`r$frame [$($thoiGianHienTai.ToString('HH:mm:ss'))] Time remaining: $gioConLai hour $phutConLai minute $giayConLai second" -NoNewline -ForegroundColor $color
+              Write-Host "`r$frame [$($thoiGianHienTai.ToString('d.HH:mm:ss'))] Time remaining: $gioConLai hour $phutConLai minute $giayConLai second" -NoNewline -ForegroundColor $color
               
               Start-Sleep -Seconds 5
               
@@ -374,5 +349,52 @@ jobs:
           Write-Host ""
           Write-Host "🎯 TIME'S UP - AUTOMATIC STOP!" -ForegroundColor Red
           
-          # Dọn dẹp jobs
+          # Clean up jobs
           Get-Job -Name "SystemMonitor" -ErrorAction SilentlyContinue | Stop-Job -PassThru | Remove-Job -Force
+
+      # PROFESSIONAL CLEANING
+      - name: 🧹 CLEAN UP THE SYSTEM
+        if: always()
+        run: |
+          Write-Host ""
+          Write-Host "🧹 SYSTEM CLEANUP IN PROGRESS..." -ForegroundColor Yellow
+          
+          $cleanupSteps = @(
+              @{Name="Erase file password"; Script={
+                  Remove-Item "$env:TEMP\rdp_password.txt" -ErrorAction SilentlyContinue
+              }},
+              @{Name="Disable users"; Script={
+                  Disable-LocalUser -Name "AISTV-PREMIUM" -ErrorAction SilentlyContinue
+              }},
+              @{Name="Close the network connection"; Script={
+                  & "$env:ProgramFiles\Tailscale\tailscale.exe" down --accept-risk=all -ErrorAction SilentlyContinue
+                  Start-Sleep -Seconds 5
+              }},
+              @{Name="Delete firewall rules"; Script={
+                  netsh advfirewall firewall delete rule name="RDP-Premium" dir=in -ErrorAction SilentlyContinue
+                  netsh advfirewall firewall delete rule name="RDP-Premium-Out" dir=out -ErrorAction SilentlyContinue
+                  Remove-NetFirewallRule -DisplayName "RDP-Premium" -ErrorAction SilentlyContinue
+                  Remove-NetFirewallRule -DisplayName "RDP-Premium-Out" -ErrorAction SilentlyContinue
+              }},
+              @{Name="Restore RDP settings"; Script={
+                  Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server' -Name "fDenyTSConnections" -Value 1 -Force -ErrorAction SilentlyContinue
+                  Stop-Service -Name TermService -Force -ErrorAction SilentlyContinue
+              }}
+          )
+          
+          foreach($step in $cleanupSteps) {
+              Write-Host "│ 🗑️  $($step.Name)..." -NoNewline -ForegroundColor Gray
+              try {
+                  & $step.Script
+                  Write-Host "`r│ ✅ $($step.Name)" -ForegroundColor Green
+              } catch {
+                  Write-Host "`r│ ⚠️  $($step.Name) - Handled safely" -ForegroundColor Yellow
+              }
+              Start-Sleep -Milliseconds 300
+          }
+          
+          # Clean up any remaining jobs.
+          Get-Job | Stop-Job -PassThru | Remove-Job -Force -ErrorAction SilentlyContinue
+          
+          Write-Host ""
+          Write-Host "🎉 Cleanup complete! See you soon! 👋" -ForegroundColor Green
