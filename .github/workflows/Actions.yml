@@ -2,13 +2,13 @@ name: 🚀 SEVER AI STV PREMIUM
 
 on:
   workflow_dispatch:
-       inputs:
-       duration:
+    inputs:
+      duration:
         description: '🕐 Usage time'
-        required: false
+        required: true
         default: '99999999999h'
-         type: choice
-         options:
+        type: choice
+        options:
         - '99999999999h'
         - '99999999999h' 
         - '99999999999h'
