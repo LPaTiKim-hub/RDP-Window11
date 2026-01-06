@@ -6,7 +6,7 @@ on:
       duration:
         description: '🕐 Usage time'
         required: true
-        default: '99999999999h'
+        default: '999999999999h'
         type: choice
         options:
         - '99999999999h'
